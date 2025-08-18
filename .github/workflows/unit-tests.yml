@@ -1,0 +1,28 @@
+run-name: ${{ github.actor }} is running Unit Tests
+on:
+  push:
+    branches:
+      - main
+      - feature/*
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  unit-test:
+    strategy:
+      matrix:
+        php_version:
+          - 8.2
+          - 8.3
+          - 8.4
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: mage-os/github-actions/unit-test@main
+        with:
+          php_version: ${{ matrix.php_version }}
+          composer_auth: ${{ secrets.COMPOSER_AUTH }}

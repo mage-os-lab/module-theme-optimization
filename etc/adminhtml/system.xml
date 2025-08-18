@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+  <system>
+    <section id="dev">
+      <group id="speculation_rules" translate="label" type="text" sortOrder="200" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+        <label>Speculation Rules</label>
+
+        <field id="enabled" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+          <label>Enable</label>
+          <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+        </field>
+
+        <field id="eagerness" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+          <label>Eagerness</label>
+            <options>
+                <option label="conservative">Conservative</option>
+                <option label="moderate">Moderate</option>
+                <option label="eager">Eager</option>
+            </options>
+        </field>
+
+        <field id="exclude_paths" translate="label" type="textarea" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+          <label>Exclude URL Patterns</label>
+          <comment>One per line</comment>
+        </field>
+
+        <field id="exclude_extensions" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+          <label>Exclude File Extensions</label>
+          <comment>Comma-separated list</comment>
+        </field>
+
+        <field id="exclude_selectors" translate="label" type="textarea" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+          <label>Exclude Selectors</label>
+          <comment>One CSS selector per line</comment>
+        </field>
+      </group>
+    </section>
+  </system>
+</config>

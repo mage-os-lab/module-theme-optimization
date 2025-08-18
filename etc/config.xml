@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+  <default>
+    <dev>
+      <speculation_rules>
+        <enabled>1</enabled>
+        <eagerness>moderate</eagerness>
+        <exclude_paths>customer
+login
+logout
+auth
+cart
+checkout
+search
+download
+redirect
+rewrite
+store
+productalert</exclude_paths>
+        <exclude_extensions>pdf,zip</exclude_extensions>
+        <exclude_selectors>.do-not-prerender</exclude_selectors>
+      </speculation_rules>
+    </dev>
+  </default>
+</config>

@@ -1,5 +1,5 @@
 {
-    "name": "mageos/module-theme-optimization",
+    "name": "mage-os/module-theme-optimization",
     "description": "Page transitions and speculative loading rules for Magento",
     "type": "magento2-module",
     "require": {

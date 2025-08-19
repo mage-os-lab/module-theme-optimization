@@ -10,7 +10,7 @@ This module provides theme-related features to improve the performance of your M
 To install the module, run the following commands in SSH, from the Magento root directory:
 
 ```bash
-composer require mageos/theme-optimization
+composer require mage-os/module-theme-optimization
 php bin/magento setup:upgrade
 ```
 

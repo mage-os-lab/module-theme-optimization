@@ -1,39 +1,55 @@
 <?xml version="1.0"?>
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
-  <system>
-    <section id="dev">
-      <group id="speculation_rules" translate="label" type="text" sortOrder="200" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
-        <label>Speculation Rules</label>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="dev">
+            <group id="speculation_rules" translate="label" type="text" sortOrder="200" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                <label>Speculative Loading</label>
 
-        <field id="enabled" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
-          <label>Enable</label>
-          <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-        </field>
+                <field id="enabled" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Enable Speculation Rules</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Speculative loading tries to guess the user's intentions and start to load pages before a link is actually clicked. This makes the perceived load time faster.</comment>
+                </field>
 
-        <field id="eagerness" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
-          <label>Eagerness</label>
-            <options>
-                <option label="conservative">Conservative</option>
-                <option label="moderate">Moderate</option>
-                <option label="eager">Eager</option>
-            </options>
-        </field>
+                <field id="eagerness" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Eagerness</label>
+                    <options>
+                        <option label="Conservative">conservative</option>
+                        <option label="Moderate">moderate</option>
+                        <option label="Eager">eager</option>
+                    </options>
+                    <comment>Higher eagerness will start loading pages sooner, but may load pages that the user never visits.</comment>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
 
-        <field id="exclude_paths" translate="label" type="textarea" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
-          <label>Exclude URL Patterns</label>
-          <comment>One per line</comment>
-        </field>
+                <field id="exclude_paths" translate="label comment" type="textarea" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Exclude URL Patterns</label>
+                    <comment>One pattern per line</comment>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
 
-        <field id="exclude_extensions" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
-          <label>Exclude File Extensions</label>
-          <comment>Comma-separated list</comment>
-        </field>
+                <field id="exclude_extensions" translate="label comment" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Exclude File Extensions</label>
+                    <comment>Comma-separated list</comment>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
 
-        <field id="exclude_selectors" translate="label" type="textarea" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
-          <label>Exclude Selectors</label>
-          <comment>One CSS selector per line</comment>
-        </field>
-      </group>
-    </section>
-  </system>
+                <field id="exclude_selectors" translate="label comment" type="textarea" sortOrder="50" showInDefault="1"
+                       showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Exclude Selectors</label>
+                    <comment>One CSS selector per line</comment>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+            </group>
+        </section>
+    </system>
 </config>

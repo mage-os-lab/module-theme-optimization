@@ -94,9 +94,6 @@ class SpeculationRules implements ArgumentInterface
         );
     }
 
-    /**
-     * @return array
-     */
     public function getExcludedPaths(): array
     {
         $paths = explode("\n", (string)$this->getConfigValue('exclude_paths'));

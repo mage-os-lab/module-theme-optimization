@@ -4,6 +4,7 @@ This module provides theme-related features to improve the performance of your M
 
 * Page transitions when navigating between pages on Magento
 * Speculative preloading of internal links on hover
+* BF Cache management
 
 ## Installation details
 
@@ -33,7 +34,15 @@ The module provides settings in the Magento Admin Panel under:
 
 • **Exclude Selectors** - CSS selectors for links to never preload. Enter one selector per line. (Default: .do-not-prerender)
 
-All values can be configured at Default, Website, and Store View scopes.
+**Stores > Configuration > Advanced > System > Full Page Cache**
+
+The module adds two new settings for bf cache management:
+
+• **Enable Back Forward Cache** - Decide if Bf should be enabled or not
+
+• **Excluded paths** - Specify a list of paths separated by "|" that mustn't be cached by the browser.
+
+When "Varnish Cache" is selected as "Caching Application" this module will update the VCL generated inside the "varnish" section below using "Excluded paths".
 
 There is no configuration for the Page Transitions feature. When installed, page transitions are always enabled for all Magento themes (frontend and admin panel).
 

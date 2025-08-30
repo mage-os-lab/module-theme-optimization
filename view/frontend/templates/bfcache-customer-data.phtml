@@ -1,0 +1,28 @@
+<?php
+/** @var Template $block */
+/** @var Escaper $escaper */
+/** @var SecureHtmlRenderer $secureRenderer */
+
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Element\Template;
+use Magento\Framework\View\Helper\SecureHtmlRenderer;
+use MageOS\ThemeOptimization\ViewModel\BFCacheSections;
+
+/** @var BFCacheSections $viewModel */
+$viewModel = $block->getViewModel();
+$sections = $viewModel->getSectionsToReload();
+?>
+
+<?= $secureRenderer->renderTag('script', [], <<<script
+    window.addEventListener('pageshow', (event) => {
+        if (event.persisted) {
+            require([
+            'Magento_Customer/js/customer-data'
+            ], function (customerData) {
+               const sections = [$sections];
+               customerData.invalidate(sections);
+               customerData.reload(sections, true);
+            });
+        };
+    });
+script, false); ?>

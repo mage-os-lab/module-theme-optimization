@@ -21,5 +21,11 @@ productalert</exclude_paths>
         <exclude_selectors>.do-not-prerender</exclude_selectors>
       </speculation_rules>
     </dev>
+    <system>
+      <full_page_cache>
+        <bfcache_enabled>0</bfcache_enabled>
+        <excluded_paths>checkout|cart|customer|wishlist|downloadable|sales|vault|review|newsletter</excluded_paths>
+      </full_page_cache>
+    </system>
   </default>
 </config>

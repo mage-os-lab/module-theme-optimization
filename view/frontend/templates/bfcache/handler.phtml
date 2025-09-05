@@ -1,0 +1,162 @@
+<?php declare(strict_types=1);
+
+use MageOS\ThemeOptimization\ViewModel\BfCache as BfCacheViewModel;
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Helper\SecureHtmlRenderer;
+
+/** @var BfCacheViewModel $bfcacheConfig */
+/** @var Escaper $escaper */
+/** @var SecureHtmlRenderer $secureRenderer */
+
+$bfcacheConfig = $block->getData('bfcache_config');
+?>
+
+<?php
+$isCustomerLoggedIn = $bfcacheConfig->isCustomerLoggedIn() ? 'true' : 'false';
+$enableUserInteractionRefresh = $bfcacheConfig->getEnableUserInteractionRefreshMiniCart() ? 'true' : 'false';
+$autoCloseMenuMobile = $bfcacheConfig->autoCloseMenuMobile() ? 'true' : 'false';
+
+$script = <<<SCRIPT
+    (() => {
+        'use strict';
+
+        class BFCacheHandler {
+            /**
+             * Initialize BFCache handler with configuration options
+             */
+            constructor() {
+                this.options = {
+                    isCustomerLoggedIn: {$isCustomerLoggedIn},
+                    enableUserInteractionRefreshMiniCart: {$enableUserInteractionRefresh},
+                    autoCloseMenuMobile: {$autoCloseMenuMobile}
+                };
+                
+                this.userInteractionEvents = ['touchstart', 'mouseover', 'wheel', 'scroll', 'keydown'];
+            }
+
+            /**
+             * Initialize all BFCache functionalities
+             */
+            init() {
+                this.refreshMiniCart();
+                this.reloadCustomerLoginPage();
+                this.actionAutoCloseMenu(this.options.autoCloseMenuMobile);
+            }
+
+            /**
+             * Refresh minicart based on configuration
+             * Either immediately or on first user interaction
+             */
+            refreshMiniCart() {
+                if (this.options.enableUserInteractionRefreshMiniCart) {
+                    this.refreshMiniCartOnUserInteraction();
+                } else {
+                    this.actionRefreshMiniCart();
+                }
+            }
+
+            /**
+             * Refresh minicart on first user interaction
+             * Removes event listeners after first trigger to avoid multiple calls
+             */
+            refreshMiniCartOnUserInteraction() {
+                const refreshMiniCart = () => {
+                    this.userInteractionEvents.forEach(eventType => {
+                        window.removeEventListener(eventType, refreshMiniCart);
+                    });
+                    this.actionRefreshMiniCart();
+                };
+
+                this.userInteractionEvents.forEach(eventType => {
+                    window.addEventListener(eventType, refreshMiniCart, {
+                        once: true,
+                        passive: true
+                    });
+                });
+            }
+
+            /**
+             * Check customer login state consistency and reload if needed
+             * Compares backend state with frontend localStorage state
+             */
+            reloadCustomerLoginPage() {
+                const backendLoggedInState = this.options.isCustomerLoggedIn;
+                
+                const getCustomerDataFromStorage = () => {
+                    try {
+                        const cacheStorage = localStorage.getItem('mage-cache-storage');
+                        const customerData = cacheStorage ? JSON.parse(cacheStorage).customer : null;
+                        return customerData;
+                    } catch (error) {
+                        console.warn('BFCache: Failed to parse customer data from localStorage', error);
+                        return null;
+                    }
+                };
+
+                const customerData = getCustomerDataFromStorage();
+                const frontendLoggedInState = Boolean(customerData?.firstname);
+
+                if (frontendLoggedInState !== backendLoggedInState) {
+                    window.location.reload();
+                }
+            }
+
+            /**
+             * Update minicart data from customer data sections
+             * Reloads cart section to ensure accurate item count and totals
+             */
+            actionRefreshMiniCart() {
+                require([
+                    'Magento_Customer/js/customer-data'
+                ], function (customerData) {
+                    customerData.reload(['cart'], true);
+                });
+            }
+
+            /**
+             * Handles cart drawer menu and mobile menu state management
+             * 
+             * @param {boolean} autoCloseMenuMobile - Whether to auto-close mobile menu
+             */
+            actionAutoCloseMenu(autoCloseMenuMobile) {
+                require([
+                    'jquery',
+                    'Magento_Customer/js/customer-data'
+                ], function ($, customerData) {
+                    customerData.reload(['messages'], true);
+                    
+                    const minicartCloseButton = $('#btn-minicart-close');
+                    if (minicartCloseButton.length) {
+                        minicartCloseButton.trigger('click');
+                    }
+
+                    if (autoCloseMenuMobile) {
+                        const htmlElement = $('html');
+                        
+                        const navigationClasses = ['nav-open', 'nav-before-open'];
+                        navigationClasses.forEach(function(className) {
+                            if (htmlElement.hasClass(className)) {
+                                htmlElement.removeClass(className);
+                            }
+                        });
+                    }
+                });
+            }
+        };
+
+        /**
+         * Handle pageshow event for BFCache scenarios
+         * Detects back/forward navigation and page restoration from BFCache
+         */
+        const handlePageShow = (event) => {
+            if (event.persisted) {
+                new BFCacheHandler().init();
+            }
+        };
+
+        // Register event listener with proper cleanup capability
+        window.addEventListener('pageshow', handlePageShow, { passive: true });
+    })();
+SCRIPT;
+?>
+<?= /* @noEscape */ $secureRenderer->renderTag('script', ['type' => 'text/javascript'], $script, false) ?>

@@ -60,7 +60,7 @@
                 <group id="general" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>General Settings</label>
                     <attribute type="expanded">1</attribute>
-                    <field id="enable" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <field id="enable" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                         <label>Enable Back/Forward Cache</label>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <comment><![CDATA[
@@ -68,7 +68,7 @@
                         ]]>
                         </comment>
                     </field>
-                    <field id="enable_user_interaction_reload_minicart" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <field id="enable_user_interaction_reload_minicart" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                         <label>Update Mini Cart on User Interaction</label>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <comment><![CDATA[
@@ -78,7 +78,7 @@
                         ]]>
                         </comment>
                     </field>
-                    <field id="auto_close_menu_mobile" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <field id="auto_close_menu_mobile" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                         <label>Auto Close Menu</label>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <comment><![CDATA[
@@ -94,7 +94,7 @@
                             The extension automatically excludes non-cacheable URLs from back/forward cache.</p>
                         <p>Use the blacklist below if you have custom cached URLs that load private data via JavaScript.</p>
                     ]]></comment>
-                    <field id="black_list_urls" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <field id="black_list_urls" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                         <label>Excluded URLs</label>
                         <comment><![CDATA[
                         Comma-separated list of URL patterns to exclude from back/forward cache.

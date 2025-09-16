@@ -52,6 +52,7 @@ class Http
 
         $cacheControl = $cacheControlHeader->getFieldValue();
         $requestURI = ltrim($this->request->getRequestURI(), '/');
+
         if ($this->isRequestCacheable($cacheControl) && !$this->isRequestInExcludePatterns($requestURI)) {
             $this->isRequestCacheable = true;
         }
@@ -105,7 +106,7 @@ class Http
     {
         $patterns = $this->getConfig(self::XML_PATH_EXCLUDE_URL_PATTERNS);
 
-        if (!$patterns) {
+        if (empty($patterns)) {
             return false;
         }
 
@@ -147,11 +148,11 @@ class Http
      *
      * @param string $configPath
      * @param int|string|null $store
-     * @return string|null
+     * @return string
      */
-    private function getConfig(string $configPath, $store = null): ?string
+    private function getConfig(string $configPath, $store = null): string
     {
-        return $this->scopeConfig->getValue(
+        return (string)$this->scopeConfig->getValue(
             $configPath,
             ScopeInterface::SCOPE_STORE,
             $store

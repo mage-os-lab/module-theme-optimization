@@ -12,18 +12,11 @@ use Magento\Store\Model\ScopeInterface;
  */
 class Http
 {
-    /** Configuration paths */
-    const XML_PATH_ENABLE = 'system/bfcache/general/enable';
-    const XML_PATH_BLACK_LIST_URLS = 'system/bfcache/scope/black_list_urls';
+    /** @var string */
+    public const XML_PATH_ENABLE = 'system/bfcache/general/enable';
 
-    /** @var Config */
-    private $config;
-
-    /** @var ScopeConfigInterface */
-    private $scopeConfig;
-
-    /** @var HttpRequest */
-    private $request;
+    /** @var string */
+    public const XML_PATH_EXCLUDE_URL_PATTERNS = 'system/bfcache/scope/exclude_url_patterns';
 
     /** @var bool */
     private $isRequestCacheable = false;
@@ -34,13 +27,10 @@ class Http
      * @param HttpRequest $request
      */
     public function __construct(
-        Config $config,
-        ScopeConfigInterface $scopeConfig,
-        HttpRequest $request
+        private Config $config,
+        private ScopeConfigInterface $scopeConfig,
+        private HttpRequest $request
     ) {
-        $this->config = $config;
-        $this->scopeConfig = $scopeConfig;
-        $this->request = $request;
     }
 
     /**
@@ -62,8 +52,7 @@ class Http
 
         $cacheControl = $cacheControlHeader->getFieldValue();
         $requestURI = ltrim($this->request->getRequestURI(), '/');
-        
-        if ($this->isRequestCacheable($cacheControl) && !$this->isRequestInBlackListUrls($requestURI)) {
+        if ($this->isRequestCacheable($cacheControl) && !$this->isRequestInExcludePatterns($requestURI)) {
             $this->isRequestCacheable = true;
         }
     }
@@ -86,8 +75,8 @@ class Http
             return $result;
         }
 
-        if ($this->isRequestCacheable == true) {
-            $cacheControlHeader = $subject->getHeader('cache-control');
+        if ($this->isRequestCacheable === true) {
+            $cacheControlHeader = $subject->getHeader('Cache-Control');
             $cacheControlHeader->removeDirective('no-store');
         }
         $this->isRequestCacheable = false;
@@ -107,19 +96,37 @@ class Http
     }
 
     /**
-     * Check if request URI matches blacklisted URLs
+     * Check if the request URI contains any excluded URL patterns (case-insensitive, partial match).
      *
      * @param string $requestURI
      * @return bool
      */
-    private function isRequestInBlackListUrls(string $requestURI): bool
+    private function isRequestInExcludePatterns(string $requestURI): bool
     {
-        $blackListUrls = $this->convertListUrls(self::XML_PATH_BLACK_LIST_URLS);
-        if (!$blackListUrls) {
+        $patterns = $this->getConfig(self::XML_PATH_EXCLUDE_URL_PATTERNS);
+
+        if (!$patterns) {
             return false;
         }
-        
-        return (bool) preg_match('/' . $blackListUrls . '/', $requestURI);
+
+        foreach ($this->parseExcludePatterns($patterns) as $pattern) {
+            if ($pattern !== '' && mb_stripos($requestURI, $pattern, 0, 'UTF-8') !== false) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Parse exclude patterns from config string.
+     *
+     * @param string $patterns
+     * @return array
+     */
+    private function parseExcludePatterns(string $patterns): array
+    {
+        return array_filter(array_map('trim', explode("\n", $patterns)));
     }
 
     /**
@@ -149,24 +156,5 @@ class Http
             ScopeInterface::SCOPE_STORE,
             $store
         );
-    }
-
-    /**
-     * Convert comma-separated URLs to pipe-separated regex pattern
-     *
-     * @param string $configPath
-     * @return string
-     */
-    private function convertListUrls(string $configPath): string
-    {
-        $listUrls = $this->getConfig($configPath);
-        if (!$listUrls) {
-            return '';
-        }
-        
-        $urlList = array_map('trim', explode(',', $listUrls));
-        $urlList = array_filter($urlList);
-        
-        return implode('|', array_map('preg_quote', $urlList, array_fill(0, count($urlList), '/')));
     }
 }

@@ -2,48 +2,43 @@
 
 namespace MageOS\ThemeOptimization\ViewModel;
 
+use Magento\Customer\Model\Context as CustomerContext;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\Http\Context;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Magento\Store\Model\ScopeInterface;
-use Magento\Customer\Model\Context as CustomerContext;
 
 /**
  * BFCache ViewModel
- * 
  * Provides data and configuration for BFCache templates.
  * Handles configuration management and business logic for frontend templates.
  */
 class BfCache implements ArgumentInterface
 {
-    /** Configuration paths */
-    const XML_PATH_ENABLE_USER_INTERACTION_RELOAD_MINICART = 'system/bfcache/general/enable_user_interaction_reload_minicart';
-    const XML_PATH_AUTO_CLOSE_MENU_MOBILE = 'system/bfcache/general/auto_close_menu_mobile';
-
-    /** @var ScopeConfigInterface */
-    private $scopeConfig;
-
-    /** @var Context */
-    private $httpContext;
+    /** @var string */
+    private const XML_PATH_ENABLE_USER_INTERACTION_RELOAD_MINICART =
+        'system/bfcache/general/enable_user_interaction_reload_minicart';
+        
+    /** @var string */
+    private const XML_PATH_AUTO_CLOSE_MENU_MOBILE =
+        'system/bfcache/general/auto_close_menu_mobile';
 
     /**
      * @param ScopeConfigInterface $scopeConfig
      * @param Context $httpContext
      */
     public function __construct(
-        ScopeConfigInterface $scopeConfig,
-        Context $httpContext
+        private ScopeConfigInterface $scopeConfig,
+        private Context $httpContext
     ) {
-        $this->scopeConfig = $scopeConfig;
-        $this->httpContext = $httpContext;
     }
 
     /**
-     * Check if user interaction should refresh minicart
+     * Check if mini cart should reload on user interaction
      *
      * @return bool
      */
-    public function getEnableUserInteractionRefreshMiniCart(): bool
+    public function isReloadMiniCartOnInteraction(): bool
     {
         return $this->scopeConfig->isSetFlag(
             self::XML_PATH_ENABLE_USER_INTERACTION_RELOAD_MINICART,

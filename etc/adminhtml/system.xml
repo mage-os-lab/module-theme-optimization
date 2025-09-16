@@ -82,7 +82,7 @@
                         <label>Auto Close Menu</label>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <comment><![CDATA[
-                        Automatically close open menus when page is restored from back/forward cache.
+                        Automatically close open menus when page is restored from back/forward cache (for compatible themes).
                         ]]>
                         </comment>
                     </field>
@@ -94,10 +94,14 @@
                             The extension automatically excludes non-cacheable URLs from back/forward cache.</p>
                         <p>Use the blacklist below if you have custom cached URLs that load private data via JavaScript.</p>
                     ]]></comment>
-                    <field id="black_list_urls" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
-                        <label>Excluded URLs</label>
+                    <field id="exclude_url_patterns" translate="label" type="textarea" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Exclude URL Patterns</label>
                         <comment><![CDATA[
-                        Comma-separated list of URL patterns to exclude from back/forward cache.
+                        Enter URL pattern (substring) per line. Any URL containing one of these patterns will be excluded from the back/forward cache.<br>
+                        Example:<br>
+                        <code>customer</code><br>
+                        <code>checkout</code><br>
+                        <code>account</code>
                         ]]></comment>
                     </field>
                 </group>

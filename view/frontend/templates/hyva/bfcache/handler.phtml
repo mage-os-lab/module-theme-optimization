@@ -1,22 +1,21 @@
 <?php declare(strict_types=1);
 
-use MageOS\ThemeOptimization\ViewModel\BfCache as BfCacheViewModel;
 use Magento\Framework\Escaper;
+use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Helper\SecureHtmlRenderer;
+use MageOS\ThemeOptimization\ViewModel\BfCache as BfCacheViewModel;
 
+/** @var Template $block */
 /** @var BfCacheViewModel $bfcacheConfig */
 /** @var Escaper $escaper */
 /** @var SecureHtmlRenderer $secureRenderer */
 
 $bfcacheConfig = $block->getData('bfcache_config');
-?>
-
-<?php
 $isCustomerLoggedIn = $bfcacheConfig->isCustomerLoggedIn() ? 'true' : 'false';
-$enableUserInteractionRefresh = $bfcacheConfig->getEnableUserInteractionRefreshMiniCart() ? 'true' : 'false';
+$enableUserInteractionRefresh = $bfcacheConfig->isReloadMiniCartOnInteraction() ? 'true' : 'false';
 $autoCloseMenuMobile = $bfcacheConfig->autoCloseMenuMobile() ? 'true' : 'false';
 
-$script = <<<SCRIPT
+$script = <<<JS
     (() => {
         'use strict';
     
@@ -168,6 +167,6 @@ $script = <<<SCRIPT
         // Register event listener with proper cleanup capability
         window.addEventListener('pageshow', handlePageShow, { passive: true });
     })();
-SCRIPT;
+JS;
 ?>
 <?= /* @noEscape */ $secureRenderer->renderTag('script', ['type' => 'text/javascript'], $script, false) ?>

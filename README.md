@@ -4,6 +4,7 @@ This module provides theme-related features to improve the performance of your M
 
 * Page transitions when navigating between pages on Magento
 * Speculative preloading of internal links on hover
+* Back/Forward Cache support for faster browser navigation
 
 ## Installation details
 
@@ -17,13 +18,20 @@ php bin/magento setup:upgrade
 ## Configuration
 
 The module provides settings in the Magento Admin Panel under:
-**Stores > Configuration > Advanced > Developer > Speculative Loading**
 
+## Configuration
+The module provides settings in the Magento Admin Panel under: **Stores > Configuration > Advanced > System**
+
+### Speculative Loading
 • **Enable Speculation Rules** - Enables speculative loading to preload pages before links are clicked, making perceived load times faster. (Default: Yes)
+
+• **Mode** - Choose between prefetch and prerender modes. (Default: prefetch)
+  - Prefetch: Downloads resources in advance
+  - Prerender: Fully renders pages in advance (faster but may affect analytics data)
 
 • **Eagerness Level** - Controls how aggressively pages are preloaded. (Default: Moderate)
   - Conservative: Minimal preloading, only when very likely to be needed
-  - Moderate: Balanced approach between performance and resource usage  
+  - Moderate: Balanced approach between performance and resource usage
   - Eager: Aggressive preloading for maximum user experience, at the cost of loading pages the user may never visit
 
 • **Exclude URL Patterns** - URL patterns to never preload. One pattern per line. (Default: customer, login, logout, auth, cart, checkout, search, download, redirect, rewrite, store, productalert)
@@ -33,6 +41,21 @@ The module provides settings in the Magento Admin Panel under:
 
 • **Exclude Selectors** - CSS selectors for links to never preload. Enter one selector per line. (Default: .do-not-prerender)
 
+### Back/Forward Cache
+
+Note: bfcache availability may vary based on your Full Page Cache engine.
+
+• **Enable Back/Forward Cache** - Enable back/forward cache to store pages in browser memory temporarily for faster navigation. (Default: Yes)
+
+• **Update Mini Cart on User Interaction**
+  - Yes: Mini cart updates only after user interaction when page is restored from cache (Default)
+  - No: Mini cart updates immediately on page restore
+  - Recommended "Yes" to maintain optimal Page Speed and Core Web Vitals scores
+
+• **Auto Close Menu** - Automatically close open menus when page is restored from back/forward cache (for compatible themes). (Default: Yes)
+
+• **Exclude URLs** - Optional configuration to exclude specific URL patterns from back/forward cache. Enter URL parts (substring), one per line. The extension automatically excludes non-cacheable URLs, so this is only needed for custom cached URLs that load private data via JavaScript.
+
 All values can be configured at Default, Website, and Store View scopes.
 
 There is no configuration for the Page Transitions feature. When installed, page transitions are always enabled for all Magento themes (frontend and admin panel).
@@ -41,6 +64,8 @@ There is no configuration for the Page Transitions feature. When installed, page
 
 Original module contributed by [@rhoerr](https://github.com/rhoerr).
 
-Credit for the default rules to [David Lambauer and @run_as_root](https://run-as-root.sh/blog/improving-pagespeed-with-speculative-loading).
+Back/forward cache support was contributed by [Oli Jaufmann and @JaJuMa](https://github.com/JaJuMa).
+
+Credit for the default speculation rules to [David Lambauer and @run_as_root](https://run-as-root.sh/blog/improving-pagespeed-with-speculative-loading).
 
 This module is sponsored and maintained by [Mage-OS](https://mage-os.org). Mage-OS makes it open source and freely available for use by any Magento 2.4+ or Adobe Commerce website.

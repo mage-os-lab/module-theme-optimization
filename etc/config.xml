@@ -21,5 +21,14 @@ productalert</exclude_paths>
         <exclude_selectors>.do-not-prerender</exclude_selectors>
       </speculation_rules>
     </dev>
+    <system>
+      <bfcache>
+        <general>
+          <enable>1</enable>
+          <enable_user_interaction_reload_minicart>1</enable_user_interaction_reload_minicart>
+          <auto_close_menu_mobile>1</auto_close_menu_mobile>
+        </general>
+      </bfcache>
+    </system>
   </default>
 </config>

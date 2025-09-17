@@ -53,10 +53,10 @@
         </section>
         <section id="system">
             <group id="bfcache" translate="label" sortOrder="590" showInDefault="1" showInWebsite="1" showInStore="1">
-                <label>Back/Forward Cache Configuration</label>
-                    <comment><![CDATA[
-                        <p>Configure browser's back/forward cache to improve navigation performance by storing pages in memory.</p>
-                    ]]></comment>
+                <label>Back/Forward Cache</label>
+                <comment><![CDATA[
+                    <p>Go back and forwards in the browser history on most pages instantly, by allowing them to be cached in the browser temporarily.</p>
+                ]]></comment>
                 <group id="general" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>General Settings</label>
                     <attribute type="expanded">1</attribute>
@@ -95,9 +95,9 @@
                         <p>Use the blacklist below if you have custom cached URLs that load private data via JavaScript.</p>
                     ]]></comment>
                     <field id="exclude_url_patterns" translate="label" type="textarea" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
-                        <label>Exclude URL Patterns</label>
+                        <label>Exclude URLs</label>
                         <comment><![CDATA[
-                        Enter URL pattern (substring) per line. Any URL containing one of these patterns will be excluded from the back/forward cache.<br>
+                        Enter URL parts (substring), one per line. Any URL containing one of these patterns will be excluded from the back/forward cache.<br>
                         Example:<br>
                         <code>customer</code><br>
                         <code>checkout</code><br>

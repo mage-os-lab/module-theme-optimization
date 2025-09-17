@@ -5,7 +5,7 @@
         <system>
             <speculation_rules>
                 <enabled>1</enabled>
-        <exclude_paths>customer
+                <mode>prefetch</mode>
                 <eagerness>moderate</eagerness>
                 <exclude_paths>customer
 login

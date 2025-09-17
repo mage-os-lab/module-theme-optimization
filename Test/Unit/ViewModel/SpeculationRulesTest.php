@@ -123,6 +123,7 @@ class SpeculationRulesTest extends TestCase
     public function testGetSpeculationRulesStructure(): void
     {
         $this->setupConfigMocks([
+            'mode' => 'prefetch',
             'eagerness' => 'moderate',
             'exclude_paths' => '',
             'exclude_extensions' => '',
@@ -132,11 +133,11 @@ class SpeculationRulesTest extends TestCase
         $result = $this->speculationRules->getSpeculationRules();
 
         $this->assertIsArray($result);
-        $this->assertArrayHasKey('prerender', $result);
-        $this->assertIsArray($result['prerender']);
-        $this->assertCount(1, $result['prerender']);
+        $this->assertArrayHasKey('prefetch', $result);
+        $this->assertIsArray($result['prefetch']);
+        $this->assertCount(1, $result['prefetch']);
 
-        $prerenderRule = $result['prerender'][0];
+        $prerenderRule = $result['prefetch'][0];
         $this->assertArrayHasKey('source', $prerenderRule);
         $this->assertArrayHasKey('where', $prerenderRule);
         $this->assertArrayHasKey('eagerness', $prerenderRule);
@@ -149,6 +150,7 @@ class SpeculationRulesTest extends TestCase
     public function testGetSpeculationRulesWithDifferentEagerness(): void
     {
         $this->setupConfigMocks([
+            'mode' => 'prefetch',
             'eagerness' => 'eager',
             'exclude_paths' => '',
             'exclude_extensions' => '',
@@ -156,7 +158,7 @@ class SpeculationRulesTest extends TestCase
         ]);
 
         $result = $this->speculationRules->getSpeculationRules();
-        $this->assertEquals('eager', $result['prerender'][0]['eagerness']);
+        $this->assertEquals('eager', $result['prefetch'][0]['eagerness']);
     }
 
     // Test Category #5: JSON Serialization Tests
@@ -164,6 +166,7 @@ class SpeculationRulesTest extends TestCase
     public function testGetSpeculationRulesJson(): void
     {
         $this->setupConfigMocks([
+            'mode' => 'prefetch',
             'eagerness' => 'moderate',
             'exclude_paths' => '',
             'exclude_extensions' => '',
@@ -183,6 +186,7 @@ class SpeculationRulesTest extends TestCase
     public function testGetSpeculationRulesJsonCallsSerializer(): void
     {
         $this->setupConfigMocks([
+            'mode' => 'prefetch',
             'eagerness' => 'conservative',
             'exclude_paths' => '',
             'exclude_extensions' => '',
@@ -193,8 +197,8 @@ class SpeculationRulesTest extends TestCase
             ->method('serialize')
             ->with($this->callback(function ($rules) {
                 return is_array($rules) &&
-                    isset($rules['prerender']) &&
-                    is_array($rules['prerender']);
+                    isset($rules['prefetch']) &&
+                    is_array($rules['prefetch']);
             }))
             ->willReturn('{"serialized":"data"}');
 
@@ -207,6 +211,7 @@ class SpeculationRulesTest extends TestCase
     public function testBuildRulesIncludesDefaultPattern(): void
     {
         $this->setupConfigMocks([
+            'mode' => 'prefetch',
             'eagerness' => 'moderate',
             'exclude_paths' => '',
             'exclude_extensions' => '',
@@ -214,7 +219,7 @@ class SpeculationRulesTest extends TestCase
         ]);
 
         $result = $this->speculationRules->getSpeculationRules();
-        $where = $result['prerender'][0]['where'];
+        $where = $result['prefetch'][0]['where'];
 
         $this->assertArrayHasKey('and', $where);
         $this->assertContains(['href_matches' => '/*'], $where['and']);
@@ -223,6 +228,7 @@ class SpeculationRulesTest extends TestCase
     public function testBuildRulesIncludesHardcodedExclusions(): void
     {
         $this->setupConfigMocks([
+            'mode' => 'prefetch',
             'eagerness' => 'moderate',
             'exclude_paths' => '',
             'exclude_extensions' => '',
@@ -230,7 +236,7 @@ class SpeculationRulesTest extends TestCase
         ]);
 
         $result = $this->speculationRules->getSpeculationRules();
-        $where = $result['prerender'][0]['where'];
+        $where = $result['prefetch'][0]['where'];
 
         $expectedExclusions = [
             ['not' => ['selector_matches' => '[rel=nofollow]']],

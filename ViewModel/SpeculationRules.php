@@ -10,7 +10,8 @@ use Magento\Store\Model\ScopeInterface;
 
 class SpeculationRules implements ArgumentInterface
 {
-    protected const CONFIG_PATH = 'dev/speculation_rules/';
+    protected const CONFIG_PATH = 'system/speculation_rules/';
+    protected const FETCH_MODES = ['prefetch', 'prerender'];
     protected const EAGERNESS_MODES = ['conservative', 'moderate', 'eager'];
 
     public function __construct(
@@ -26,6 +27,17 @@ class SpeculationRules implements ArgumentInterface
         return (bool)$this->getConfigValue('enabled');
     }
 
+    public function getMode(): string
+    {
+        $mode = $this->getConfigValue('mode');
+
+        if (in_array($mode, self::FETCH_MODES, true)) {
+            return $mode;
+        }
+
+        return 'prefetch';
+    }
+
     public function getEagerness(): string
     {
         $eagerness = $this->getConfigValue('eagerness');
@@ -39,8 +51,9 @@ class SpeculationRules implements ArgumentInterface
 
     public function getSpeculationRules(): array
     {
+        // Possible future development: add support for multiple modes and rulesets at once.
         return [
-            'prerender' => [
+            $this->getMode() => [
                 [
                     'source' => 'document',
                     'where' => $this->buildRules(),

@@ -4,14 +4,14 @@
         <referenceContainer name="before.body.end">
             <block name="theme-optimization.speculation-rules"
                    template="MageOS_ThemeOptimization::speculation-rules.phtml"
-                   ifconfig="dev/speculation_rules/enabled"
+                   ifconfig="system/speculation_rules/enabled"
             >
                 <arguments>
                     <argument name="view_model" xsi:type="object">\MageOS\ThemeOptimization\ViewModel\SpeculationRules</argument>
                 </arguments>
             </block>
-            <block name="theme-optimization.bfcache.main" 
-                   template="MageOS_ThemeOptimization::bfcache/handler.phtml" 
+            <block name="theme-optimization.bfcache.main"
+                   template="MageOS_ThemeOptimization::bfcache/handler.phtml"
                    ifconfig="system/bfcache/general/enable">
                 <arguments>
                     <argument name="bfcache_config" xsi:type="object">\MageOS\ThemeOptimization\ViewModel\BfCache</argument>

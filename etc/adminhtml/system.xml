@@ -12,6 +12,18 @@
                     <comment>Speculative loading tries to guess the user's intentions and start to load pages before a link is actually clicked. This makes the perceived load time faster.</comment>
                 </field>
 
+                <field id="mode" translate="label comment" type="select" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Mode</label>
+                    <options>
+                        <option label="Prefetch">prefetch</option>
+                        <option label="Prerender">prerender</option>
+                    </options>
+                    <comment>Prerender is faster, but can skew analytics data unless accounted for, due to JS executing before a page is actually opened.</comment>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+
                 <field id="eagerness" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Eagerness</label>
                     <options>

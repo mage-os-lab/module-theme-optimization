@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace MageOS\ThemeOptimization\Test\Unit\ViewModel;
 
@@ -8,23 +8,22 @@ use Magento\Framework\UrlInterface;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Magento\Store\Model\ScopeInterface;
 use MageOS\ThemeOptimization\ViewModel\SpeculationRules;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class SpeculationRulesTest extends TestCase
 {
     /**
-     * @var ScopeConfigInterface|MockObject
+     * @var ScopeConfigInterface
      */
     private $scopeConfigMock;
 
     /**
-     * @var UrlInterface|MockObject
+     * @var UrlInterface
      */
     private $urlBuilderMock;
 
     /**
-     * @var SerializerInterface|MockObject
+     * @var SerializerInterface
      */
     private $serializerMock;
 
@@ -67,7 +66,7 @@ class SpeculationRulesTest extends TestCase
     {
         $this->scopeConfigMock->expects($this->once())
             ->method('getValue')
-            ->with('dev/speculation_rules/enabled', ScopeInterface::SCOPE_STORE)
+            ->with('system/speculation_rules/enabled', ScopeInterface::SCOPE_STORE)
             ->willReturn($configValue);
 
         $result = $this->speculationRules->isEnabled();
@@ -98,7 +97,7 @@ class SpeculationRulesTest extends TestCase
     {
         $this->scopeConfigMock->expects($this->once())
             ->method('getValue')
-            ->with('dev/speculation_rules/eagerness', ScopeInterface::SCOPE_STORE)
+            ->with('system/speculation_rules/eagerness', ScopeInterface::SCOPE_STORE)
             ->willReturn($configValue);
 
         $result = $this->speculationRules->getEagerness();
@@ -251,7 +250,7 @@ class SpeculationRulesTest extends TestCase
     {
         $this->scopeConfigMock->expects($this->once())
             ->method('getValue')
-            ->with('dev/speculation_rules/exclude_paths', ScopeInterface::SCOPE_STORE)
+            ->with('system/speculation_rules/exclude_paths', ScopeInterface::SCOPE_STORE)
             ->willReturn('testPath');
 
         $result = $this->speculationRules->getExcludedPaths();
@@ -264,7 +263,7 @@ class SpeculationRulesTest extends TestCase
     {
         $this->scopeConfigMock->expects($this->once())
             ->method('getValue')
-            ->with('dev/speculation_rules/exclude_paths', ScopeInterface::SCOPE_STORE)
+            ->with('system/speculation_rules/exclude_paths', ScopeInterface::SCOPE_STORE)
             ->willReturn("admin\napi\ncheckout");
 
         $result = $this->speculationRules->getExcludedPaths();
@@ -277,7 +276,7 @@ class SpeculationRulesTest extends TestCase
     {
         $this->scopeConfigMock->expects($this->once())
             ->method('getValue')
-            ->with('dev/speculation_rules/exclude_paths', ScopeInterface::SCOPE_STORE)
+            ->with('system/speculation_rules/exclude_paths', ScopeInterface::SCOPE_STORE)
             ->willReturn(" /admin/ \n /api/ ");
 
         $result = $this->speculationRules->getExcludedPaths();
@@ -290,7 +289,7 @@ class SpeculationRulesTest extends TestCase
     {
         $this->scopeConfigMock->expects($this->once())
             ->method('getValue')
-            ->with('dev/speculation_rules/exclude_paths', ScopeInterface::SCOPE_STORE)
+            ->with('system/speculation_rules/exclude_paths', ScopeInterface::SCOPE_STORE)
             ->willReturn("admin\n\napi\n   \ncheckout");
 
         $result = $this->speculationRules->getExcludedPaths();
@@ -303,7 +302,7 @@ class SpeculationRulesTest extends TestCase
     {
         $this->scopeConfigMock->expects($this->once())
             ->method('getValue')
-            ->with('dev/speculation_rules/exclude_paths', ScopeInterface::SCOPE_STORE)
+            ->with('system/speculation_rules/exclude_paths', ScopeInterface::SCOPE_STORE)
             ->willReturn('');
 
         $result = $this->speculationRules->getExcludedPaths();
@@ -318,7 +317,7 @@ class SpeculationRulesTest extends TestCase
     {
         $this->scopeConfigMock->expects($this->once())
             ->method('getValue')
-            ->with('dev/speculation_rules/exclude_extensions', ScopeInterface::SCOPE_STORE)
+            ->with('system/speculation_rules/exclude_extensions', ScopeInterface::SCOPE_STORE)
             ->willReturn('pdf');
 
         $result = $this->speculationRules->getExcludedExtensions();
@@ -331,7 +330,7 @@ class SpeculationRulesTest extends TestCase
     {
         $this->scopeConfigMock->expects($this->once())
             ->method('getValue')
-            ->with('dev/speculation_rules/exclude_extensions', ScopeInterface::SCOPE_STORE)
+            ->with('system/speculation_rules/exclude_extensions', ScopeInterface::SCOPE_STORE)
             ->willReturn('pdf,doc,zip');
 
         $result = $this->speculationRules->getExcludedExtensions();
@@ -348,7 +347,7 @@ class SpeculationRulesTest extends TestCase
     {
         $this->scopeConfigMock->expects($this->once())
             ->method('getValue')
-            ->with('dev/speculation_rules/exclude_extensions', ScopeInterface::SCOPE_STORE)
+            ->with('system/speculation_rules/exclude_extensions', ScopeInterface::SCOPE_STORE)
             ->willReturn(' pdf , , doc ,  zip ');
 
         $result = $this->speculationRules->getExcludedExtensions();
@@ -365,7 +364,7 @@ class SpeculationRulesTest extends TestCase
     {
         $this->scopeConfigMock->expects($this->once())
             ->method('getValue')
-            ->with('dev/speculation_rules/exclude_extensions', ScopeInterface::SCOPE_STORE)
+            ->with('system/speculation_rules/exclude_extensions', ScopeInterface::SCOPE_STORE)
             ->willReturn('.pdf,doc,.zip');
 
         $result = $this->speculationRules->getExcludedExtensions();
@@ -382,7 +381,7 @@ class SpeculationRulesTest extends TestCase
     {
         $this->scopeConfigMock->expects($this->once())
             ->method('getValue')
-            ->with('dev/speculation_rules/exclude_extensions', ScopeInterface::SCOPE_STORE)
+            ->with('system/speculation_rules/exclude_extensions', ScopeInterface::SCOPE_STORE)
             ->willReturn('');
 
         $result = $this->speculationRules->getExcludedExtensions();
@@ -395,7 +394,7 @@ class SpeculationRulesTest extends TestCase
     {
         $this->scopeConfigMock->expects($this->once())
             ->method('getValue')
-            ->with('dev/speculation_rules/exclude_selectors', ScopeInterface::SCOPE_STORE)
+            ->with('system/speculation_rules/exclude_selectors', ScopeInterface::SCOPE_STORE)
             ->willReturn('.no-prerender');
 
         $result = $this->speculationRules->getExcludedSelectors();
@@ -408,7 +407,7 @@ class SpeculationRulesTest extends TestCase
     {
         $this->scopeConfigMock->expects($this->once())
             ->method('getValue')
-            ->with('dev/speculation_rules/exclude_selectors', ScopeInterface::SCOPE_STORE)
+            ->with('system/speculation_rules/exclude_selectors', ScopeInterface::SCOPE_STORE)
             ->willReturn(".no-prerender\n#skip-prerender\n[data-no-prerender]");
 
         $result = $this->speculationRules->getExcludedSelectors();
@@ -425,7 +424,7 @@ class SpeculationRulesTest extends TestCase
     {
         $this->scopeConfigMock->expects($this->once())
             ->method('getValue')
-            ->with('dev/speculation_rules/exclude_selectors', ScopeInterface::SCOPE_STORE)
+            ->with('system/speculation_rules/exclude_selectors', ScopeInterface::SCOPE_STORE)
             ->willReturn(" .no-prerender \n\n #skip-prerender \n   \n[data-no-prerender]");
 
         $result = $this->speculationRules->getExcludedSelectors();
@@ -442,7 +441,7 @@ class SpeculationRulesTest extends TestCase
     {
         $this->scopeConfigMock->expects($this->once())
             ->method('getValue')
-            ->with('dev/speculation_rules/exclude_selectors', ScopeInterface::SCOPE_STORE)
+            ->with('system/speculation_rules/exclude_selectors', ScopeInterface::SCOPE_STORE)
             ->willReturn("a.btn:not(.prerender)\n.modal a[href*=\"logout\"]");
 
         $result = $this->speculationRules->getExcludedSelectors();
@@ -458,7 +457,7 @@ class SpeculationRulesTest extends TestCase
     {
         $this->scopeConfigMock->expects($this->once())
             ->method('getValue')
-            ->with('dev/speculation_rules/exclude_selectors', ScopeInterface::SCOPE_STORE)
+            ->with('system/speculation_rules/exclude_selectors', ScopeInterface::SCOPE_STORE)
             ->willReturn('');
 
         $result = $this->speculationRules->getExcludedSelectors();
@@ -470,11 +469,11 @@ class SpeculationRulesTest extends TestCase
     public function testConfigPathUsage(): void
     {
         $configCalls = [
-            ['dev/speculation_rules/enabled', ScopeInterface::SCOPE_STORE],
-            ['dev/speculation_rules/eagerness', ScopeInterface::SCOPE_STORE],
-            ['dev/speculation_rules/exclude_paths', ScopeInterface::SCOPE_STORE],
-            ['dev/speculation_rules/exclude_extensions', ScopeInterface::SCOPE_STORE],
-            ['dev/speculation_rules/exclude_selectors', ScopeInterface::SCOPE_STORE],
+            ['system/speculation_rules/enabled', ScopeInterface::SCOPE_STORE],
+            ['system/speculation_rules/eagerness', ScopeInterface::SCOPE_STORE],
+            ['system/speculation_rules/exclude_paths', ScopeInterface::SCOPE_STORE],
+            ['system/speculation_rules/exclude_extensions', ScopeInterface::SCOPE_STORE],
+            ['system/speculation_rules/exclude_selectors', ScopeInterface::SCOPE_STORE],
         ];
 
         $this->scopeConfigMock->expects($this->exactly(5))
@@ -501,7 +500,7 @@ class SpeculationRulesTest extends TestCase
     {
         $this->scopeConfigMock->method('getValue')
             ->willReturnCallback(function ($path) use ($configValues) {
-                $key = str_replace('dev/speculation_rules/', '', $path);
+                $key = str_replace('system/speculation_rules/', '', $path);
                 return $configValues[$key] ?? null;
             });
     }

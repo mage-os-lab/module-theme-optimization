@@ -1,11 +1,13 @@
 <?xml version="1.0"?>
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
-  <default>
-    <dev>
-      <speculation_rules>
-        <enabled>1</enabled>
-        <eagerness>moderate</eagerness>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <system>
+            <speculation_rules>
+                <enabled>1</enabled>
         <exclude_paths>customer
+                <eagerness>moderate</eagerness>
+                <exclude_paths>customer
 login
 logout
 auth
@@ -17,18 +19,16 @@ redirect
 rewrite
 store
 productalert</exclude_paths>
-        <exclude_extensions>pdf,zip</exclude_extensions>
-        <exclude_selectors>.do-not-prerender</exclude_selectors>
-      </speculation_rules>
-    </dev>
-    <system>
-      <bfcache>
-        <general>
-          <enable>1</enable>
-          <enable_user_interaction_reload_minicart>1</enable_user_interaction_reload_minicart>
-          <auto_close_menu_mobile>1</auto_close_menu_mobile>
-        </general>
-      </bfcache>
-    </system>
-  </default>
+                <exclude_extensions>pdf,zip</exclude_extensions>
+                <exclude_selectors>.do-not-prerender</exclude_selectors>
+            </speculation_rules>
+            <bfcache>
+                <general>
+                    <enable>1</enable>
+                    <enable_user_interaction_reload_minicart>1</enable_user_interaction_reload_minicart>
+                    <auto_close_menu_mobile>1</auto_close_menu_mobile>
+                </general>
+            </bfcache>
+        </system>
+    </default>
 </config>

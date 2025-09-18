@@ -4,7 +4,7 @@
     <default>
         <system>
             <speculation_rules>
-                <enabled>1</enabled>
+                <enable>1</enable>
                 <mode>prefetch</mode>
                 <eagerness>moderate</eagerness>
                 <exclude_paths>customer

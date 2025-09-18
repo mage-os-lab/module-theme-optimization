@@ -24,7 +24,7 @@ class SpeculationRules implements ArgumentInterface
 
     public function isEnabled(): bool
     {
-        return (bool)$this->getConfigValue('enabled');
+        return (bool)$this->getConfigValue('enable');
     }
 
     public function getMode(): string

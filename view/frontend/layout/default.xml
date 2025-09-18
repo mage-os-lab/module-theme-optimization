@@ -4,7 +4,7 @@
         <referenceContainer name="before.body.end">
             <block name="theme-optimization.speculation-rules"
                    template="MageOS_ThemeOptimization::speculation-rules.phtml"
-                   ifconfig="system/speculation_rules/enabled"
+                   ifconfig="system/speculation_rules/enable"
             >
                 <arguments>
                     <argument name="view_model" xsi:type="object">\MageOS\ThemeOptimization\ViewModel\SpeculationRules</argument>

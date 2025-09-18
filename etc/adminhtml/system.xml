@@ -3,10 +3,10 @@
         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
     <system>
         <section id="system">
-            <group id="speculation_rules" translate="label" type="text" sortOrder="200" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="speculation_rules" translate="label" type="text" sortOrder="594" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Speculative Loading</label>
 
-                <field id="enabled" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                <field id="enable" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Enable Speculation Rules</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>Speculative loading tries to guess the user's intentions and start to load pages before a link is actually clicked. This makes the perceived load time faster.</comment>
@@ -20,7 +20,7 @@
                     </options>
                     <comment>Prerender is faster, but can skew analytics data unless accounted for, due to JS executing before a page is actually opened.</comment>
                     <depends>
-                        <field id="enabled">1</field>
+                        <field id="enable">1</field>
                     </depends>
                 </field>
 
@@ -33,7 +33,7 @@
                     </options>
                     <comment>Higher eagerness will start loading pages sooner, but may load pages that the user never visits.</comment>
                     <depends>
-                        <field id="enabled">1</field>
+                        <field id="enable">1</field>
                     </depends>
                 </field>
 
@@ -41,7 +41,7 @@
                     <label>Exclude URL Patterns</label>
                     <comment>One pattern per line</comment>
                     <depends>
-                        <field id="enabled">1</field>
+                        <field id="enable">1</field>
                     </depends>
                 </field>
 
@@ -49,7 +49,7 @@
                     <label>Exclude File Extensions</label>
                     <comment>Comma-separated list</comment>
                     <depends>
-                        <field id="enabled">1</field>
+                        <field id="enable">1</field>
                     </depends>
                 </field>
 
@@ -57,7 +57,7 @@
                     <label>Exclude Selectors</label>
                     <comment>One CSS selector per line</comment>
                     <depends>
-                        <field id="enabled">1</field>
+                        <field id="enable">1</field>
                     </depends>
                 </field>
             </group>

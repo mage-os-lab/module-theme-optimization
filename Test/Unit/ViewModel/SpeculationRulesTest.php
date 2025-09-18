@@ -66,7 +66,7 @@ class SpeculationRulesTest extends TestCase
     {
         $this->scopeConfigMock->expects($this->once())
             ->method('getValue')
-            ->with('system/speculation_rules/enabled', ScopeInterface::SCOPE_STORE)
+            ->with('system/speculation_rules/enable', ScopeInterface::SCOPE_STORE)
             ->willReturn($configValue);
 
         $result = $this->speculationRules->isEnabled();
@@ -82,7 +82,7 @@ class SpeculationRulesTest extends TestCase
             'boolean false' => [false, false],
             'null' => [null, false],
             'empty string' => ['', false],
-            'non-empty string' => ['enabled', true],
+            'non-empty string' => ['enable', true],
             'integer 1' => [1, true],
             'integer 0' => [0, false],
         ];
@@ -475,7 +475,7 @@ class SpeculationRulesTest extends TestCase
     public function testConfigPathUsage(): void
     {
         $configCalls = [
-            ['system/speculation_rules/enabled', ScopeInterface::SCOPE_STORE],
+            ['system/speculation_rules/enable', ScopeInterface::SCOPE_STORE],
             ['system/speculation_rules/eagerness', ScopeInterface::SCOPE_STORE],
             ['system/speculation_rules/exclude_paths', ScopeInterface::SCOPE_STORE],
             ['system/speculation_rules/exclude_extensions', ScopeInterface::SCOPE_STORE],

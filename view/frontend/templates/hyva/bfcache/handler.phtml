@@ -1,16 +1,19 @@
 <?php declare(strict_types=1);
 
+use Hyva\Theme\Model\ViewModelRegistry;
 use Hyva\Theme\ViewModel\HyvaCsp;
 use Magento\Framework\Escaper;
 use Magento\Framework\View\Element\Template;
-use MageOS\ThemeOptimization\ViewModel\BfCache as BfCacheViewModel;
+use MageOS\ThemeOptimization\ViewModel\BfCache;
 
 /** @var Template $block */
-/** @var BfCacheViewModel $bfcacheConfig */
 /** @var Escaper $escaper */
+/** @var ViewModelRegistry $viewModels */
 /** @var HyvaCsp $hyvaCsp */
 
-$bfcacheConfig = $block->getData('bfcache_config');
+/** @var BfCache $bfcacheConfig */
+$bfcacheConfig = $viewModels->require(BfCache::class);
+
 $isCustomerLoggedIn = $bfcacheConfig->isCustomerLoggedIn() ? 'true' : 'false';
 $enableUserInteractionRefresh = $bfcacheConfig->isReloadMiniCartOnInteraction() ? 'true' : 'false';
 $autoCloseMenuMobile = $bfcacheConfig->autoCloseMenuMobile() ? 'true' : 'false';

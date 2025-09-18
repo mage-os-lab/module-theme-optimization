@@ -17,6 +17,14 @@
                     <argument name="bfcache_config" xsi:type="object">\MageOS\ThemeOptimization\ViewModel\BfCache</argument>
                 </arguments>
             </block>
+            <block name="theme-optimization.view-transitions"
+                   template="MageOS_ThemeOptimization::view-transitions.phtml"
+                   ifconfig="system/view_transitions/enable"
+            >
+                <arguments>
+                    <argument name="view_model" xsi:type="object">\MageOS\ThemeOptimization\ViewModel\ViewTransitions</argument>
+                </arguments>
+            </block>
         </referenceContainer>
     </body>
 </page>

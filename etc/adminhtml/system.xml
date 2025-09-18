@@ -115,6 +115,19 @@
                     </field>
                 </group>
             </group>
+            <group id="view_transitions" translate="label" sortOrder="598" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>View Transitions</label>
+                <field id="enable" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Enable View Transitions</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Enable view transitions when loading pages on the same domain.</comment>
+                </field>
+                <field id="enable_for_bfcache" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Apply on Back/Forward</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Apply view transitions when going back or forward with browser navigation. Back/Forward Cache can render pages faster without.</comment>
+                </field>
+            </group>
         </section>
     </system>
 </config>

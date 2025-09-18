@@ -1,0 +1,36 @@
+<?php
+/** @var Template $block */
+/** @var Escaper $escaper */
+
+/** @var SecureHtmlRenderer $secureRenderer */
+
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Element\Template;
+use Magento\Framework\View\Helper\SecureHtmlRenderer;
+use MageOS\ThemeOptimization\ViewModel\ViewTransitions;
+
+/** @var ViewTransitions $viewModel */
+$viewModel = $block->getViewModel();
+if (!$viewModel->isEnabled()) {
+    return;
+}
+
+$style = <<<CSS
+    @media not (prefers-reduced-motion: reduce) {
+        @view-transition {
+            navigation: auto;
+        }
+    }
+CSS;
+echo $secureRenderer->renderTag('style', [], $style, false);
+
+if ($viewModel->isEnabledForBfcache() === false) {
+    $script = <<<JS
+        window.addEventListener('pagereveal', (e) => {
+            if (e.viewTransition && navigation.activation?.navigationType === 'traverse') {
+                e.viewTransition.skipTransition();
+            }
+        });
+    JS;
+    echo $secureRenderer->renderTag('script', [], $script, false);
+}

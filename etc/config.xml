@@ -29,6 +29,10 @@ productalert</exclude_paths>
                     <auto_close_menu_mobile>1</auto_close_menu_mobile>
                 </general>
             </bfcache>
+            <view_transitions>
+                <enable>1</enable>
+                <enable_for_bfcache>0</enable_for_bfcache>
+            </view_transitions>
         </system>
     </default>
 </config>

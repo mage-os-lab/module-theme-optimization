@@ -1,13 +1,13 @@
-<?php
-/** @var Template $block */
-/** @var Escaper $escaper */
-
-/** @var SecureHtmlRenderer $secureRenderer */
+<?php declare(strict_types=1);
 
 use Magento\Framework\Escaper;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Helper\SecureHtmlRenderer;
 use MageOS\ThemeOptimization\ViewModel\SpeculationRules;
+
+/** @var Template $block */
+/** @var Escaper $escaper */
+/** @var SecureHtmlRenderer $secureRenderer */
 
 /** @var SpeculationRules $viewModel */
 $viewModel = $block->getViewModel();

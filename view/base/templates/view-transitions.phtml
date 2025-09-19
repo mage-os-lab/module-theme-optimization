@@ -11,9 +11,6 @@ use MageOS\ThemeOptimization\ViewModel\ViewTransitions;
 
 /** @var ViewTransitions $viewModel */
 $viewModel = $block->getViewModel();
-if (!$viewModel->isEnabled()) {
-    return;
-}
 
 $style = <<<CSS
     @media not (prefers-reduced-motion: reduce) {

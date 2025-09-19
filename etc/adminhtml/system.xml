@@ -125,7 +125,7 @@
                 <field id="enable_admin" translate="label tooltip" type="select" sortOrder="12" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
                     <label>Enable View Transitions for Admin</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <tooltip>Don't enable this when using the Mage-OS Admin Theme or any other Admin theme that supports View Transitions</tooltip>
+                    <tooltip>Disable if you don't want the view transitions, or when using the Mage-OS Admin Theme or any other Admin theme that has View Transitions built in</tooltip>
                 </field>
                 <field id="enable_for_bfcache" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Apply on Back/Forward</label>

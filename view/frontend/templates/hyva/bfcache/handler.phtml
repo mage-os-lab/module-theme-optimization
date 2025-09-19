@@ -1,24 +1,26 @@
 <?php declare(strict_types=1);
 
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\HyvaCsp;
 use Magento\Framework\Escaper;
 use Magento\Framework\View\Element\Template;
-use Magento\Framework\View\Helper\SecureHtmlRenderer;
-use MageOS\ThemeOptimization\ViewModel\BfCache as BfCacheViewModel;
+use MageOS\ThemeOptimization\ViewModel\BfCache;
 
 /** @var Template $block */
-/** @var BfCacheViewModel $bfcacheConfig */
 /** @var Escaper $escaper */
-/** @var SecureHtmlRenderer $secureRenderer */
+/** @var ViewModelRegistry $viewModels */
+/** @var HyvaCsp $hyvaCsp */
 
-$bfcacheConfig = $block->getData('bfcache_config');
+/** @var BfCache $bfcacheConfig */
+$bfcacheConfig = $viewModels->require(BfCache::class);
+
 $isCustomerLoggedIn = $bfcacheConfig->isCustomerLoggedIn() ? 'true' : 'false';
 $enableUserInteractionRefresh = $bfcacheConfig->isReloadMiniCartOnInteraction() ? 'true' : 'false';
 $autoCloseMenuMobile = $bfcacheConfig->autoCloseMenuMobile() ? 'true' : 'false';
+?>
 
-$script = <<<JS
+<script>
     (() => {
-        'use strict';
-    
         class BFCacheHandler {
             /**
              * Initialize BFCache handler with configuration options
@@ -29,7 +31,7 @@ $script = <<<JS
                     enableUserInteractionRefreshMiniCart: {$enableUserInteractionRefresh},
                     autoCloseMenuMobile: {$autoCloseMenuMobile}
                 };
-                
+
                 this.userInteractionEvents = ['touchstart', 'mouseover', 'wheel', 'scroll', 'keydown'];
             }
 
@@ -80,7 +82,7 @@ $script = <<<JS
              */
             reloadCustomerLoginPage() {
                 const backendLoggedInState = this.options.isCustomerLoggedIn;
-                
+
                 const getCustomerDataFromStorage = () => {
                     try {
                         const cacheStorage = localStorage.getItem('mage-cache-storage');
@@ -110,7 +112,7 @@ $script = <<<JS
 
             /**
              * Handles cart drawer menu and mobile menu state management
-             * 
+             *
              * @param {boolean} autoCloseMenuMobile - Whether to auto-close mobile menu
              */
             actionAutoCloseMenu(autoCloseMenuMobile) {
@@ -153,7 +155,7 @@ $script = <<<JS
                 }
             }
         };
-    
+
         /**
          * Handle pageshow event for BFCache scenarios
          * Detects back/forward navigation and page restoration from BFCache
@@ -167,6 +169,5 @@ $script = <<<JS
         // Register event listener with proper cleanup capability
         window.addEventListener('pageshow', handlePageShow, { passive: true });
     })();
-JS;
-?>
-<?= /* @noEscape */ $secureRenderer->renderTag('script', ['type' => 'text/javascript'], $script, false) ?>
+</script>
+<?php $hyvaCsp->registerInlineScript() ?>

@@ -16,10 +16,8 @@ if (!$viewModel->isEnabled()) {
 }
 
 $style = <<<CSS
-    @media not (prefers-reduced-motion: reduce) {
-        @view-transition {
-            navigation: auto;
-        }
+    @view-transition {
+        navigation: auto;
     }
 CSS;
 echo $secureRenderer->renderTag('style', [], $style, false);

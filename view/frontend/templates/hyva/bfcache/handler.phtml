@@ -122,7 +122,7 @@ $autoCloseMenuMobile = $bfcacheConfig->autoCloseMenuMobile() ? 'true' : 'false';
                 if (!cartDrawer || typeof Alpine === 'undefined') {
                     return;
                 }
-                const cartDrawerData = Alpine.\$data(cartDrawer);
+                const cartDrawerData = Alpine.$data(cartDrawer);
                 if (cartDrawerData && typeof cartDrawerData.open !== 'undefined') {
                     cartDrawerData.open = false;
                     document.body.style.overflow = '';
@@ -140,7 +140,7 @@ $autoCloseMenuMobile = $bfcacheConfig->autoCloseMenuMobile() ? 'true' : 'false';
             handleMenuClosure() {
                 const mobileMenu = document.querySelector("[x-data^='initMenuMobile']");
                 if (mobileMenu && typeof Alpine !== 'undefined') {
-                    const mobileMenuData = Alpine.\$data(mobileMenu);
+                    const mobileMenuData = Alpine.$data(mobileMenu);
                     if (mobileMenuData && typeof mobileMenuData.open !== 'undefined') {
                         mobileMenuData.open = false;
                     }
@@ -148,7 +148,7 @@ $autoCloseMenuMobile = $bfcacheConfig->autoCloseMenuMobile() ? 'true' : 'false';
 
                 const desktopMenu = document.querySelector("[x-data^='initMenuDesktop']");
                 if (desktopMenu && typeof Alpine !== 'undefined') {
-                    const desktopMenuData = Alpine.\$data(desktopMenu);
+                    const desktopMenuData = Alpine.$data(desktopMenu);
                     if (desktopMenuData && typeof desktopMenuData.hoverPanelActiveId !== 'undefined') {
                         desktopMenuData.hoverPanelActiveId = 0;
                     }

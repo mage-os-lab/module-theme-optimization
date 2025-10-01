@@ -10,44 +10,29 @@ use MageOS\ThemeOptimization\ViewModel\BfCache;
 /** @var Escaper $escaper */
 /** @var ViewModelRegistry $viewModels */
 /** @var HyvaCsp $hyvaCsp */
-
 /** @var BfCache $bfcacheConfig */
 $bfcacheConfig = $viewModels->require(BfCache::class);
-
-$isCustomerLoggedIn = $bfcacheConfig->isCustomerLoggedIn() ? 'true' : 'false';
-$enableUserInteractionRefresh = $bfcacheConfig->isReloadMiniCartOnInteraction() ? 'true' : 'false';
-$autoCloseMenuMobile = $bfcacheConfig->autoCloseMenuMobile() ? 'true' : 'false';
 ?>
 
 <script>
     (() => {
         class BFCacheHandler {
-            /**
-             * Initialize BFCache handler with configuration options
-             */
             constructor() {
                 this.options = {
-                    isCustomerLoggedIn: {$isCustomerLoggedIn},
-                    enableUserInteractionRefreshMiniCart: {$enableUserInteractionRefresh},
-                    autoCloseMenuMobile: {$autoCloseMenuMobile}
+                    isCustomerLoggedIn: <?= json_encode($bfcacheConfig->isCustomerLoggedIn()) ?>,
+                    enableUserInteractionRefreshMiniCart: <?= json_encode($bfcacheConfig->isReloadMiniCartOnInteraction()) ?>,
+                    autoCloseMenuMobile: <?= json_encode($bfcacheConfig->autoCloseMenuMobile()) ?>
                 };
 
-                this.userInteractionEvents = ['touchstart', 'mouseover', 'wheel', 'scroll', 'keydown'];
+                this.userInteractionEvents = ['touchstart', 'mouseover', 'wheel', 'keydown'];
             }
 
-            /**
-             * Initialize all BFCache functionalities
-             */
             init() {
                 this.refreshMiniCart();
                 this.reloadCustomerLoginPage();
                 this.actionAutoCloseMenu(this.options.autoCloseMenuMobile);
             }
 
-            /**
-             * Refresh minicart based on configuration
-             * Either immediately or on first user interaction
-             */
             refreshMiniCart() {
                 if (this.options.enableUserInteractionRefreshMiniCart) {
                     this.refreshMiniCartOnUserInteraction();
@@ -56,10 +41,6 @@ $autoCloseMenuMobile = $bfcacheConfig->autoCloseMenuMobile() ? 'true' : 'false';
                 }
             }
 
-            /**
-             * Refresh minicart on first user interaction
-             * Removes event listeners after first trigger to avoid multiple calls
-             */
             refreshMiniCartOnUserInteraction() {
                 const refreshMiniCart = () => {
                     this.userInteractionEvents.forEach(eventType => {
@@ -76,10 +57,6 @@ $autoCloseMenuMobile = $bfcacheConfig->autoCloseMenuMobile() ? 'true' : 'false';
                 });
             }
 
-            /**
-             * Check customer login state consistency and reload if needed
-             * Compares backend state with frontend localStorage state
-             */
             reloadCustomerLoginPage() {
                 const backendLoggedInState = this.options.isCustomerLoggedIn;
 
@@ -102,71 +79,53 @@ $autoCloseMenuMobile = $bfcacheConfig->autoCloseMenuMobile() ? 'true' : 'false';
                 }
             }
 
-            /**
-             * Update minicart data from customer data sections
-             * Reloads cart section to ensure accurate item count and totals
-             */
             actionRefreshMiniCart() {
                 window.dispatchEvent(new CustomEvent('reload-customer-section-data'));
             }
 
-            /**
-             * Handles cart drawer menu and mobile menu state management
-             *
-             * @param {boolean} autoCloseMenuMobile - Whether to auto-close mobile menu
-             */
             actionAutoCloseMenu(autoCloseMenuMobile) {
                 window.dispatchEvent(new Event('clear-messages'));
 
                 const cartDrawer = document.querySelector("[x-data^='initCartDrawer']");
-                if (!cartDrawer || typeof Alpine === 'undefined') {
-                    return;
-                }
-                const cartDrawerData = Alpine.\$data(cartDrawer);
-                if (cartDrawerData && typeof cartDrawerData.open !== 'undefined') {
-                    cartDrawerData.open = false;
-                    document.body.style.overflow = '';
-                }
+                requestAnimationFrame(() => {
+                    if (cartDrawer && typeof Alpine !== 'undefined') {
+                        const cartDrawerData = Alpine.$data(cartDrawer);
+                        if (cartDrawerData?.open !== undefined) {
+                            cartDrawerData.open = false;
+                            document.body.style.overflow = '';
+                        }
+                    }
+                });
 
                 if (autoCloseMenuMobile) {
                     this.handleMenuClosure();
                 }
             }
 
-            /**
-             * Close mobile and desktop menus
-             * Uses Alpine.js data binding to manage menu states
-             */
             handleMenuClosure() {
                 const mobileMenu = document.querySelector("[x-data^='initMenuMobile']");
                 if (mobileMenu && typeof Alpine !== 'undefined') {
-                    const mobileMenuData = Alpine.\$data(mobileMenu);
-                    if (mobileMenuData && typeof mobileMenuData.open !== 'undefined') {
+                    const mobileMenuData = Alpine.$data(mobileMenu);
+                    if (mobileMenuData?.open !== undefined) {
                         mobileMenuData.open = false;
                     }
                 }
 
                 const desktopMenu = document.querySelector("[x-data^='initMenuDesktop']");
                 if (desktopMenu && typeof Alpine !== 'undefined') {
-                    const desktopMenuData = Alpine.\$data(desktopMenu);
-                    if (desktopMenuData && typeof desktopMenuData.hoverPanelActiveId !== 'undefined') {
+                    const desktopMenuData = Alpine.$data(desktopMenu);
+                    if (desktopMenuData?.hoverPanelActiveId !== undefined) {
                         desktopMenuData.hoverPanelActiveId = 0;
                     }
                 }
             }
         };
 
-        /**
-         * Handle pageshow event for BFCache scenarios
-         * Detects back/forward navigation and page restoration from BFCache
-         */
-        const handlePageShow = (event) => {
-            if (event.persisted) {
-                new BFCacheHandler().init();
-            }
+        // Always run init on pageshow (back/forward navigation + BFCache restore)
+        const handlePageShow = () => {
+            new BFCacheHandler().init();
         };
 
-        // Register event listener with proper cleanup capability
         window.addEventListener('pageshow', handlePageShow, { passive: true });
     })();
 </script>

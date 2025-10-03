@@ -65,6 +65,7 @@
                 <label>Back/Forward Cache</label>
                 <comment><![CDATA[
                     <p>Go back and forwards in the browser history on most pages without reload, by allowing them to be cached in the browser temporarily.</p>
+                    <p><b>Important:</b> Support for bfcache depends on your Full Page Cache backend. While this module works out-of-the-box with Magento's built-in cache, using Varnish, Fastly, or other reverse proxies requires additional configuration. Please see the <a href="https://github.com/mage-os-lab/module-theme-optimization/blob/main/README.md#varnish--fastly-configuration" target="_blank">Varnish & Fastly Configuration</a> section in the README for details.</p>
                 ]]></comment>
                 <group id="general" translate="label comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>General Settings</label>

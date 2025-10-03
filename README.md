@@ -61,6 +61,31 @@ Note: bfcache availability may vary based on your Full Page Cache engine.
 * **Auto Close Menu** - Automatically close open menus when page is restored from back/forward cache (for compatible themes). (Default: Yes)
 * **Exclude URLs** - Optional configuration to exclude specific URL patterns from back/forward cache. Enter URL parts (substring), one per line. The extension automatically excludes non-cacheable URLs, so this is only needed for custom cached URLs that load private data via JavaScript.
 
+#### Varnish & Fastly Configuration
+
+For the Back/Forward Cache feature to work when using Varnish or Fastly as your Full Page Cache, a small modification to your VCL (Varnish Configuration Language) is required. This change is necessary to prevent Varnish/Fastly from sending the `Cache-Control: no-store` header for publicly cacheable pages, as this header instructs browsers not to use bfcache.
+
+The logic is the same for both Varnish and Fastly. You will need to add the following snippet to your `vcl_deliver` subroutine, which checks if a page is marked as `public` by Magento and, if so, removes the `no-store` directive that would otherwise block bfcache.
+
+**Recommended VCL Snippet**
+
+```vcl
+sub vcl_deliver {
+
+// Update following line: //
+set resp.http.Cache-Control = "no-store, no-cache, must-revalidate, max-age=0";
+
+// To: //
+    if (resp.http.Cache-Control ~ "public") {
+        set resp.http.Cache-Control = "no-cache, must-revalidate, max-age=0";
+    } else {
+        set resp.http.Cache-Control = "no-store, no-cache, must-revalidate, max-age=0";
+    }
+}
+```
+
+For users seeking a more comprehensive Varnish solution for Magento, we recommend considering the [elgentos/magento2-varnish-extended](https://github.com/elgentos/magento2-varnish-extended) module. It provides advanced features and improvements for Varnish, including bfcache compatibility.
+
 ## Contributors
 
 Initial module, page transitions, and speculation rules contributed by [@rhoerr](https://github.com/rhoerr).
